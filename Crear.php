@@ -6,8 +6,10 @@ $_SESSION['mensaje'] = null;
 //Realiza la conexión a la base de datos.
 require_once './ConexionBaseDatos.php';
 
-if (isset($_POST['btcrear'])) {
-    if (isset($conexionBD)) {
+if (isset($conexionBD)) {
+//Si se ha pulsado el botón crear.
+    if (isset($_POST['btcrear'])) {
+
         $stmt = $conexionBD->stmt_init();
         $consulta = "insert into productos(nombre,nombre_corto,descripcion,pvp,familia) values (?,?,?,?,?);";
         $stmt->prepare($consulta);
@@ -18,7 +20,8 @@ if (isset($_POST['btcrear'])) {
             header('Location: Listado.php');
         } catch (Exception $ex) {
             //Si la entrada está duplicada.
-            if (strpos($ex->getMessage(), 'Duplicate entry')) {
+            $error = $ex->getMessage();
+            if (strpos($error, "Duplicate entry") !== false) {
                 $_SESSION['mensaje'] = "Ya existe un producto con ese valor.";
             } else {
                 $_SESSION['mensaje'] = "Error en la ejecución de la consulta.";
@@ -26,9 +29,9 @@ if (isset($_POST['btcrear'])) {
         } finally {
             $stmt->close();
         }
-    } else {
-        $_SESSION['mensaje'] = $mensaje;
     }
+} else {
+    $_SESSION['mensaje'] = $mensaje;
 }
 ?>
 
@@ -57,27 +60,44 @@ if (isset($_POST['btcrear'])) {
             <div class='cont_crearmodificar'>
                 <h1>Crear Producto</h1>
                 <div class="crear">
+
                     <!-- Mensaje -->
                     <p id="mensaje"><?php
                         if (isset($_SESSION['mensaje'])) {
                             echo '! ' . $_SESSION['mensaje'];
                         }
                         ?></p>
+
                     <!--Nombre-->
                     <div class="cont">
                         <label for="nombre">Nombre</label><br>
-                        <input type="text" name="nombre" id="nombre" required placeholder="Nombre" value="">
+                        <input type="text" name="nombre" id="nombre" required placeholder="Nombre" value="<?php
+                        if (isset($_POST['nombre'])) {
+                            echo $_POST['nombre'];
+                        }
+                        ?>">
                     </div>
+
                     <!--Nombre corto-->
                     <div class="cont">
                         <label for="nombreCorto">Nombre Corto</label><br>
-                        <input type="text" name="nombreCorto" id="nombreCorto" required placeholder="Nombre Corto" pattern="[a-zA-Z0-9]{4,20}" value="" title="Debe tener eentre 4 y 20 dígitos o caracteres. Caracter espacio no admitido.">
+                        <input type="text" name="nombreCorto" id="nombreCorto" required placeholder="Nombre Corto" pattern="[a-zA-Z0-9]{4,20}" value="<?php
+                        if (isset($_POST['nombreCorto'])) {
+                            echo $_POST['nombreCorto'];
+                        }
+                        ?>" title="Debe tener eentre 4 y 20 dígitos o caracteres. Caracter espacio no admitido.">
                     </div>
+
                     <!--Precio-->
                     <div class="cont">
                         <label for="precio">Precio (&euro;)</label><br>
-                        <input type="number" name="precio" id="precio" required placeholder="Precio (&euro;)" min="0" step="0.01" value="">
+                        <input type="number" name="precio" id="precio" required placeholder="Precio (&euro;)" min="0" step="0.01" value="<?php
+                        if (isset($_POST['precio'])) {
+                            echo $_POST['precio'];
+                        }
+                        ?>">
                     </div>
+
                     <!--Familia-->
                     <div class="cont">
                         <label for="familia">Familia</label><br>
@@ -91,7 +111,12 @@ if (isset($_POST['btcrear'])) {
                                 if ($stmt->execute()) {
                                     $stmt->bind_result($codFamilia, $nombreFamilia);
                                     while ($stmt->fetch()) {
-                                        echo "<option value='" . $codFamilia . "'>" . $nombreFamilia . "</option>";
+                                        echo "<option value='" . $codFamilia . "'";
+                                        //Si se ha establecido la familia y coincide con $codFamilia.
+                                        if (isset($_POST['familia']) && $_POST['familia'] === $codFamilia) {
+                                            echo "selected";
+                                        }
+                                        echo ">" . $nombreFamilia . "</option>";
                                     }
                                     $stmt->close();
                                 }
@@ -101,9 +126,15 @@ if (isset($_POST['btcrear'])) {
                         </select>
                     </div>
                 </div>
+
                 <!--Descripción-->
                 <label for="descripción">Descripción</label><br>
-                <textarea id="descripcion" name="descripcion" rows="17" cols="80" required></textarea>
+                <textarea id="descripcion" name="descripcion" rows="17" cols="80" required><?php
+                    //Si se ha establecido la descripción.
+                    if (isset($_POST['descripcion'])) {
+                        echo $_POST['descripcion'];
+                    }
+                    ?></textarea>
 
                 <!--Botones-->
                 <div class="botones">

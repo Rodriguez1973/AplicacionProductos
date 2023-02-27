@@ -2,28 +2,33 @@
 
 <?php
 session_start();
-$_SESSION['mensaje']=null;
+$_SESSION['mensaje'] = null;
 //Realiza la conexión a la base de datos.
 require_once './ConexionBaseDatos.php';
 
-if (isset($_POST['btcrear'])) {
-    if (isset($conexionBD)) {
-        $stmt = $conexionBD->stmt_init();
-        $consulta = "insert into productos(nombre,nombre_corto,descripcion,pvp,familia) values (?,?,?,?,?);";
-        $stmt->prepare($consulta);
-        $stmt->bind_param('sssis', $_POST['nombre'], $_POST['nombreCorto'], $_POST['descripcion'], $_POST['precio'], $_POST['familia']);
-        try{ 
-            $stmt->execute();
-            $_SESSION['mensaje'] = "Producto creado correctamente.";
-            header('Location: Listado.php');
-         } catch (Exception $e) {
-            $_SESSION['mensaje'] = $e->getMessage();
-        }finally{
-            $stmt->close();
+//Se ha establecido la conexión con la base de datos.
+if (isset($conexionBD)) {
+    if (isset($_POST['btcrear'])) {
+        if (isset($conexionBD)) {
+            $stmt = $conexionBD->stmt_init();
+            $consulta = "insert into productos(nombre,nombre_corto,descripcion,pvp,familia) values (?,?,?,?,?);";
+            $stmt->prepare($consulta);
+            $stmt->bind_param('sssis', $_POST['nombre'], $_POST['nombreCorto'], $_POST['descripcion'], $_POST['precio'], $_POST['familia']);
+            try {
+                $stmt->execute();
+                $_SESSION['mensaje'] = "Producto creado correctamente.";
+                header('Location: Listado.php');
+            } catch (Exception $e) {
+                $_SESSION['mensaje'] = $e->getMessage();
+            } finally {
+                $stmt->close();
+            }
+        } else {
+            $_SESSION['mensaje'] = $mensaje;
         }
-    } else {
-        $_SESSION['mensaje'] = $mensaje;
     }
+} else {
+    $_SESSION['mensaje'] = $mensaje;
 }
 ?>
 
@@ -113,5 +118,3 @@ if (isset($_POST['btcrear'])) {
     </form>
 </body>
 </html>
-
-

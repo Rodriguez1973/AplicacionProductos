@@ -4,25 +4,33 @@
 session_start();
 require_once './ConexionBaseDatos.php';
 
-//Si se pulsa el botón "Detalle".
-if (isset($_POST['btdetalle'])) {
-    $_SESSION['datos'] = unserialize($_POST['btdetalle']);
-    header('Location: Detalle.php');
-} else if (isset($_POST['btcrear'])) {
-    header('Location: Crear.php');
-} else if (isset($_POST['btmodificar'])) {
-    $_SESSION['datos'] = unserialize($_POST['btmodificar']);
-    header('Location: Modificar.php');
-} else if (isset($_POST['btborrar'])) {
-    $_SESSION['datos'] = unserialize($_POST['btborrar']);
-    if (isset($conexionBD)) {
-        $stmt = $conexionBD->stmt_init();
-        $consulta = "delete from productos where id=?";
-        $stmt->prepare($consulta);
-        $stmt->bind_param('i', $_SESSION['datos']['codigo']);
-        $stmt->execute();
-        $stmt->close();
+//Se ha establecido la conexión con la base de datos.
+if (isset($conexionBD)) {
+    //Si se pulsa el botón "Detalle".
+    if (isset($_POST['btdetalle'])) {
+        $_SESSION['datos'] = unserialize($_POST['btdetalle']);
+        header('Location: Detalle.php');
+    //Si se pulsa el botón "Crear".
+    } else if (isset($_POST['btcrear'])) {
+        header('Location: Crear.php');
+    //Si se pulsa el botón "Modificar".
+    } else if (isset($_POST['btmodificar'])) {
+        $_SESSION['datos'] = unserialize($_POST['btmodificar']);
+        header('Location: Modificar.php');
+    //Si se pulsa el botón "Borrar".
+    } else if (isset($_POST['btborrar'])) {
+        $_SESSION['datos'] = unserialize($_POST['btborrar']);
+        if (isset($conexionBD)) {
+            $stmt = $conexionBD->stmt_init();
+            $consulta = "delete from productos where id=?";
+            $stmt->prepare($consulta);
+            $stmt->bind_param('i', $_SESSION['datos']['codigo']);
+            $stmt->execute();
+            $stmt->close();
+        }
     }
+} else {
+    $_SESSION['mensaje'] = $mensaje;
 }
 ?>
 

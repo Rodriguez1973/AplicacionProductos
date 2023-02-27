@@ -1,7 +1,7 @@
 <?php
 $nombreServidor='localhost';
 $usuario='gestor';
-$contraseña='secreto1';
+$contraseña='secreto';
 $baseDatos='proyecto';
 
 try{

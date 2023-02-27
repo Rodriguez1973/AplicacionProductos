@@ -1,0 +1,130 @@
+/* 
+    Created on : 25 feb 2023, 23:22:46
+    Author     : José A. Rodríguez López
+*/
+
+*{
+    box-sizing: content-box;
+}
+
+html{
+    width: 100%;
+}
+
+body{
+    font-family: sans-serif;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    background-color: #2596be;
+    min-width: 1000px;
+}
+
+input, select, button{
+    font-size: 17px;
+    padding: 8px 15px;
+    margin: 10px;
+}
+
+input, select{
+    width:90%;
+}
+
+.cont_usuario input:last-child{
+    margin-right: 30px;
+}
+
+#btsalir{
+    background-color: #df3445;
+    color: white;
+    border-radius: 5px;
+    border: none;
+}
+
+#btcrear{
+    background-color: #017afd;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    margin: 10px;
+}
+
+#btlimpiar{
+    background-color: #28a83f;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    margin: 10px;
+}
+
+#btvolver{
+    background-color: #16a4bc;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    margin: 10px;
+}
+
+#usuario{
+    background-color: #2596be;
+    border: 1px solid white;
+    width:150px;
+    color:white;
+}
+
+#mensaje{
+    margin-top: 50px;
+    font-weight: bold;
+    font-size: 17px;
+    text-align: center;
+    color: red;
+}
+
+.cont_usuario{
+    display:flex;
+    justify-content: right;
+}
+
+.icono{
+    display: flex;
+    background-color: #2596be;
+    align-items: center;
+}
+
+h1{
+    text-align: center;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.cont_crearmodificar{
+    margin-left: auto;
+    margin-right: auto;
+    width:1000px;
+}
+
+.crear{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+label{
+    color: black;
+    margin-left: 10px;
+}
+
+.botones{
+    display: flex;
+}
+
+textarea{
+    margin: 10px;
+    font-size: 17px;
+}
+
+.cont{
+    width:50%;
+}

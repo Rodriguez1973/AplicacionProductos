@@ -2,21 +2,19 @@
 
 <?php
 session_start();
-$_SESSION['mensaje'] = null;
 //Realiza la conexión a la base de datos.
 require_once './ConexionBaseDatos.php';
 
 if (isset($conexionBD)) {
 //Si se ha pulsado el botón crear.
     if (isset($_POST['btcrear'])) {
-
-        $stmt = $conexionBD->stmt_init();
-        $consulta = "insert into productos(nombre,nombre_corto,descripcion,pvp,familia) values (?,?,?,?,?);";
-        $stmt->prepare($consulta);
-        $stmt->bind_param('sssis', $_POST['nombre'], $_POST['nombreCorto'], $_POST['descripcion'], $_POST['precio'], $_POST['familia']);
         try {
+            $stmt = $conexionBD->stmt_init();
+            $consulta = "insert into productos(nombre,nombre_corto,descripcion,pvp,familia) values (?,?,?,?,?);";
+            $stmt->prepare($consulta);
+            $stmt->bind_param('sssis', $_POST['nombre'], $_POST['nombreCorto'], $_POST['descripcion'], $_POST['precio'], $_POST['familia']);
             $stmt->execute();
-            $_SESSION['mensaje'] = "Producto creado correctamente.";
+            $_SESSION['mensaje'] = "! Producto creado correctamente.";
             header('Location: Listado.php');
         } catch (Exception $ex) {
             //Si la entrada está duplicada.

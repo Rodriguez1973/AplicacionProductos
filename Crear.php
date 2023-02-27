@@ -26,7 +26,7 @@ require_once './ConexionBaseDatos.php';
                 <input type="text" name="usuario" id="usuario" disabled value="<?php echo $_SESSION['usuario'] ?>">
                 <a href="Login.php">
                     <button type="button" name="btsalir" id="btsalir" value="">Salir</button>
-                </a>   
+                </a>
             </div>
             <!-- Mensaje -->
             <p><?php echo $mensaje; ?></p>

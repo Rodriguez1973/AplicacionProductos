@@ -4,13 +4,16 @@
 session_start();
 $mensaje = "";
 require_once './ConexionBaseDatos.php';
-//Si se pulsa el botón "Login" o el botón "Salir".
-if (isset($_POST['btlogin']) || isset($_POST['btsalir'])) {
-    header('Location: login.php');
+
 //Si se pulsa el botón "Detalle".
-} else if (isset($_POST['btdetalle'])) {
+if (isset($_POST['btdetalle'])) {
     $_SESSION['datos'] = unserialize($_POST['btdetalle']);
-    header('Location: detalle.php');
+    header('Location: Detalle.php');
+}else if(isset($_POST['btcrear'])){
+    header('Location: Crear.php');
+}else if(isset($_POST['btmodificar'])){
+    $_SESSION['datos'] = unserialize($_POST['btmodificar']);
+    header('Location: Modificar.php');
 }
 ?>
 
@@ -32,9 +35,13 @@ if (isset($_POST['btlogin']) || isset($_POST['btsalir'])) {
                 </div>
                 <input type="text" name="usuario" id="usuario" disabled value="<?php echo $_SESSION['usuario'] ?>">
                 <?php if ($_SESSION['usuario'] == "Invitado") { ?>
-                    <input type="submit" name="btlogin" id="btlogin" value="Login">
+                <a href="Login.php">
+                    <button type="button" name="btlogin" id="btlogin" value="">Login</button>
+                </a>
                 <?php } else { ?>
-                    <input type="submit" name="btsalir" id="btsalir" value="Salir">
+                <a href="Login.php">
+                    <button type="button" name="btsalir" id="btsalir" value="">Salir</button>
+                </a>
                 <?php } ?>    
             </div>
             <p><?php echo $mensaje; ?></p>

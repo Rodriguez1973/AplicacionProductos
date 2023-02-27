@@ -22,7 +22,7 @@ body{
     min-width: 1000px;
 }
 
-input{
+input,  button{
     font-size: 17px;
     padding: 8px 15px;
     margin: 10px;
@@ -40,11 +40,10 @@ input{
 }
 
 #btlogin{
-    background-color: #017afd;
+    background-color: #027bfe;
     color: white;
     border-radius: 5px;
     border: none;
-    margin: 10px;
 }
 
 #btcrear{
@@ -53,7 +52,6 @@ input{
     border-radius: 5px;
     border: none;
     font-size: 17px;
-    padding: 8px 15px;
     margin: 10px 0;
 }
 

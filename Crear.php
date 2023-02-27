@@ -59,8 +59,8 @@ if (isset($_POST['btcrear'])) {
                 <div class="crear">
                     <!-- Mensaje -->
                     <p id="mensaje"><?php
-                        if ($_SESSION['mensaje']) {
-                            echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />' . $_SESSION['mensaje'];
+                        if (isset($_SESSION['mensaje'])) {
+                            echo '! ' . $_SESSION['mensaje'];
                         }
                         ?></p>
                     <!--Nombre-->

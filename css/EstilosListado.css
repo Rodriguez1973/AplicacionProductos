@@ -93,11 +93,11 @@ input,  button{
 }
 
 #mensaje{
-    margin-top: 50px;
+    margin: 10px 0;
     font-weight: bold;
     font-size: 17px;
-    text-align: center;
-    color: red;
+    text-align: left;
+    color: #000099;
 }
 
 .cont_usuario{

@@ -29,8 +29,6 @@ if (isset($conexionBD)) {
             $stmt->close();
         }
     }
-} else {
-    $_SESSION['mensaje'] = $mensaje;
 }
 ?>
 

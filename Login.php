@@ -81,13 +81,14 @@ if (isset($_POST['btlogin'])) {
                     <button type="submit" name="btlogin" id="btlogin" value="">Login</button>
                 </div>
             </div>
-
+        </form>
+        <div id='cont_mensaje'>
             <?php
             if (isset($_SESSION['mensaje'])) {
                 echo '<p id="mensaje">' . $_SESSION['mensaje'] . '</p>';
-                $_SESSION['mensaje']=null;
+                $_SESSION['mensaje'] = null;
             }
             ?>
-        </form>
+        </div>
     </body>
 </html>

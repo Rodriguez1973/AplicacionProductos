@@ -61,8 +61,6 @@ if (isset($conexionBD)) {
             $stmt->close();
         }
     }
-} else {
-    $_SESSION['mensaje'] = $mensaje;
 }
 ?>
 
@@ -114,7 +112,7 @@ if (isset($conexionBD)) {
                         <label for="nombreCorto">Nombre Corto</label><br>
                         <input type="text" name="nombreCorto" id="nombreCorto" required placeholder="Nombre Corto" pattern="[a-zA-Z0-9]{4,20}" value="<?php
                         echo $nombreCorto;
-                        ?>" title="Debe tener eentre 4 y 20 dígitos o caracteres. Caracter espacio no admitido.">
+                        ?>" title="Debe tener entre 4 y 20 dígitos o caracteres. Caracter espacio no admitido.">
                     </div>
 
                     <!--Precio-->

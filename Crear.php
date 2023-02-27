@@ -30,8 +30,6 @@ if (isset($conexionBD)) {
             $stmt->close();
         }
     }
-} else {
-    $_SESSION['mensaje'] = $mensaje;
 }
 ?>
 
@@ -87,7 +85,7 @@ if (isset($conexionBD)) {
                         if (isset($_POST['nombreCorto'])) {
                             echo $_POST['nombreCorto'];
                         }
-                        ?>" title="Debe tener eentre 4 y 20 dígitos o caracteres. Caracter espacio no admitido.">
+                        ?>" title="Debe tener entre 4 y 20 dígitos o caracteres. Caracter espacio no admitido.">
                     </div>
 
                     <!--Precio-->

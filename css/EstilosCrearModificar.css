@@ -52,6 +52,14 @@ input, select{
     margin: 10px;
 }
 
+#btmodificar{
+    background-color: #017afd;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    margin: 10px;
+}
+
 #btlimpiar{
     background-color: #28a83f;
     color: white;

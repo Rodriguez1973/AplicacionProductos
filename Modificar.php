@@ -4,18 +4,25 @@
 session_start();
 //Realiza la conexión a la base de datos.
 require_once './ConexionBaseDatos.php';
+$cambio = false;
 
 if (isset($conexionBD)) {
     //Si se ha pulsado el botón modificar.
     if (isset($_POST['btmodificar'])) {
-        $stmt = $conexionBD->stmt_init();
-        $consulta = "update productos set nombre=?, nombre_corto=?, descripcion=?, pvp=?, familia=?;";
-        $stmt->prepare($consulta);
-        $stmt->bind_param('sssis', $_POST['nombre'], $_POST['nombreCorto'], $_POST['descripcion'], $_POST['precio'], $_POST['familia']);
+        $nombre = $_POST['nombre'];
+        $nombreCorto = $_POST['nombreCorto'];
+        $descripcion = $_POST['descripcion'];
+        $precio = $_POST['precio'];
+        $familia = $_POST['familia'];
         try {
+            $stmt = $conexionBD->stmt_init();
+            $consulta = "update productos set nombre=?, nombre_corto=?, descripcion=?, pvp=?, familia=? where id=?;";
+            $stmt->prepare($consulta);
+            $stmt->bind_param('sssisi', $nombre, $nombreCorto, $descripcion, $precio, $familia, $_SESSION['datos']['codigo']);
             $stmt->execute();
-            $_SESSION['mensaje'] = "Producto modificado correctamente.";
+            $_SESSION['mensaje'] = "! Producto modificado correctamente.";
             header('Location: Listado.php');
+            $cambio = true;
         } catch (Exception $ex) {
             //Si la entrada está duplicada.
             $error = $ex->getMessage();
@@ -27,14 +34,21 @@ if (isset($conexionBD)) {
         } finally {
             $stmt->close();
         }
+        //Viene de la página Listado.php.
     } else {
-        try{
+        try {
             $stmt = $conexionBD->stmt_init();
             $consulta = "select nombre, nombre_corto, descripcion, pvp, familia from productos where id=?;";
             $stmt->prepare($consulta);
             $stmt->bind_param('i', $_SESSION['datos']['codigo']);
             $stmt->execute();
-            $stmt->bind_result($nombre,$nombreCorto,$descripcion,$precio, $familia);
+            $resultado = $stmt->get_result();
+            $producto = $resultado->fetch_assoc();
+            $nombre = $producto['nombre'];
+            $nombreCorto = $producto['nombre_corto'];
+            $descripcion = $producto['descripcion'];
+            $precio = $producto['pvp'];
+            $familia = $producto['familia'];
         } catch (Exception $ex) {
             //Si la entrada está duplicada.
             $error = $ex->getMessage();
@@ -54,7 +68,7 @@ if (isset($conexionBD)) {
 
 <html>
     <head>
-        <title>Crear producto</title>
+        <title>Modificar producto</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./css/EstilosCrearModificar.css"/>
@@ -75,14 +89,15 @@ if (isset($conexionBD)) {
             </div>
 
             <div class='cont_crearmodificar'>
-                <h1>Crear Producto</h1>
+                <h1>Modificar Producto</h1>
                 <div class="crear">
 
                     <!-- Mensaje -->
                     <p id="mensaje"><?php
-                        if (isset($_SESSION['mensaje'])) {
+                        //Si hay mensaje y no cambia de página.
+                        if (isset($_SESSION['mensaje']) && !$cambio) {
                             echo $_SESSION['mensaje'];
-                            echo $_SESSION['mensaje']=null;
+                            echo $_SESSION['mensaje'] = null;
                         }
                         ?></p>
 
@@ -90,9 +105,7 @@ if (isset($conexionBD)) {
                     <div class="cont">
                         <label for="nombre">Nombre</label><br>
                         <input type="text" name="nombre" id="nombre" required placeholder="Nombre" value="<?php
-                        if (isset($_POST['nombre'])) {
-                            echo $_POST['nombre'];
-                        }
+                        echo $nombre;
                         ?>">
                     </div>
 
@@ -100,9 +113,7 @@ if (isset($conexionBD)) {
                     <div class="cont">
                         <label for="nombreCorto">Nombre Corto</label><br>
                         <input type="text" name="nombreCorto" id="nombreCorto" required placeholder="Nombre Corto" pattern="[a-zA-Z0-9]{4,20}" value="<?php
-                        if (isset($_POST['nombreCorto'])) {
-                            echo $_POST['nombreCorto'];
-                        }
+                        echo $nombreCorto;
                         ?>" title="Debe tener eentre 4 y 20 dígitos o caracteres. Caracter espacio no admitido.">
                     </div>
 
@@ -110,9 +121,7 @@ if (isset($conexionBD)) {
                     <div class="cont">
                         <label for="precio">Precio (&euro;)</label><br>
                         <input type="number" name="precio" id="precio" required placeholder="Precio (&euro;)" min="0" step="0.01" value="<?php
-                        if (isset($_POST['precio'])) {
-                            echo $_POST['precio'];
-                        }
+                        echo $precio;
                         ?>">
                     </div>
 
@@ -130,8 +139,8 @@ if (isset($conexionBD)) {
                                     $stmt->bind_result($codFamilia, $nombreFamilia);
                                     while ($stmt->fetch()) {
                                         echo "<option value='" . $codFamilia . "'";
-                                        //Si se ha establecido la familia y coincide con $codFamilia.
-                                        if (isset($_POST['familia']) && $_POST['familia'] === $codFamilia) {
+                                        //Si $familia y coincide con $codFamilia la selecciona.
+                                        if ($familia === $codFamilia) {
                                             echo "selected";
                                         }
                                         echo ">" . $nombreFamilia . "</option>";
@@ -148,15 +157,12 @@ if (isset($conexionBD)) {
                 <!--Descripción-->
                 <label for="descripción">Descripción</label><br>
                 <textarea id="descripcion" name="descripcion" rows="17" cols="80" required><?php
-                    //Si se ha establecido la descripción.
-                    if (isset($_POST['descripcion'])) {
-                        echo $_POST['descripcion'];
-                    }
+                    echo $descripcion;
                     ?></textarea>
 
                 <!--Botones-->
                 <div class="botones">
-                    <button type="submit" name="btcrear" id="btcrear" value="">Crear</button>
+                    <button type="submit" name="btmodificar" id="btmodificar" value="">Modificar</button>
                     <button type="reset" name="btlimpiar" id="btlimpiar" value="">Limpiar</button>
                     <a href="Listado.php">
                         <button type="button" name="btvolver" id="btvolver" value="">Volver</button>

@@ -4,6 +4,7 @@
 session_start();
 //Realiza la conexión a la base de datos.
 require_once './ConexionBaseDatos.php';
+$cambio=false;  //Flag de cambio de página.
 
 if (isset($conexionBD)) {
 //Si se ha pulsado el botón crear.
@@ -16,6 +17,7 @@ if (isset($conexionBD)) {
             $stmt->execute();
             $_SESSION['mensaje'] = "! Producto creado correctamente.";
             header('Location: Listado.php');
+            $cambio=true;
         } catch (Exception $ex) {
             //Si la entrada está duplicada.
             $error = $ex->getMessage();
@@ -61,7 +63,8 @@ if (isset($conexionBD)) {
 
                     <!-- Mensaje -->
                     <p id="mensaje"><?php
-                        if (isset($_SESSION['mensaje'])) {
+                        //Si hay mensaje y no cambia de página.
+                        if (isset($_SESSION['mensaje']) && !$cambio) {
                             echo $_SESSION['mensaje'];
                             $_SESSION['mensaje'] = null;
                         }

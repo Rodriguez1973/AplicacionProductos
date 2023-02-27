@@ -13,9 +13,9 @@ if (isset($conexionBD)) {
     //Si se pulsa el botón "Crear".
     } else if (isset($_POST['btcrear'])) {
         header('Location: Crear.php');
-    //Si se pulsa el botón "Modificar".
-    } else if (isset($_POST['btmodificar'])) {
-        $_SESSION['datos'] = unserialize($_POST['btmodificar']);
+    //Si se pulsa el botón "Actualizar".
+    } else if (isset($_POST['btactualizar'])) {
+        $_SESSION['datos'] = unserialize($_POST['btactualizar']);
         header('Location: Modificar.php');
     //Si se pulsa el botón "Borrar".
     } else if (isset($_POST['btborrar'])) {

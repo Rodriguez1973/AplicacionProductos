@@ -61,9 +61,9 @@ if (isset($conexionBD)) {
 
                     <!-- Mensaje -->
                     <p id="mensaje"><?php
-                        if ($_SESSION['mensaje'] !== '') {
+                        if (isset($_SESSION['mensaje'])) {
                             echo $_SESSION['mensaje'];
-                            $_SESSION['mensaje']='';
+                            $_SESSION['mensaje'] = null;
                         }
                         ?></p>
 

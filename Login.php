@@ -83,8 +83,9 @@ if (isset($_POST['btlogin'])) {
             </div>
 
             <?php
-            if ($_SESSION['mensaje'] !== '') {
+            if (isset($_SESSION['mensaje'])) {
                 echo '<p id="mensaje">' . $_SESSION['mensaje'] . '</p>';
+                $_SESSION['mensaje']=null;
             }
             ?>
         </form>

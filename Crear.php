@@ -2,9 +2,34 @@
 
 <?php
 session_start();
-$mensaje = "";
+$_SESSION['mensaje'] = null;
 //Realiza la conexión a la base de datos.
 require_once './ConexionBaseDatos.php';
+
+if (isset($_POST['btcrear'])) {
+    if (isset($conexionBD)) {
+        $stmt = $conexionBD->stmt_init();
+        $consulta = "insert into productos(nombre,nombre_corto,descripcion,pvp,familia) values (?,?,?,?,?);";
+        $stmt->prepare($consulta);
+        $stmt->bind_param('sssis', $_POST['nombre'], $_POST['nombreCorto'], $_POST['descripcion'], $_POST['precio'], $_POST['familia']);
+        try {
+            $stmt->execute();
+            $_SESSION['mensaje'] = "Producto creado correctamente.";
+            header('Location: Listado.php');
+        } catch (Exception $ex) {
+            //Si la entrada está duplicada.
+            if (strpos($ex->getMessage(), 'Duplicate entry')) {
+                $_SESSION['mensaje'] = "Ya existe un producto con ese valor.";
+            } else {
+                $_SESSION['mensaje'] = "Error en la ejecución de la consulta.";
+            }
+        } finally {
+            $stmt->close();
+        }
+    } else {
+        $_SESSION['mensaje'] = $mensaje;
+    }
+}
 ?>
 
 <html>
@@ -28,16 +53,20 @@ require_once './ConexionBaseDatos.php';
                     <button type="button" name="btsalir" id="btsalir" value="">Salir</button>
                 </a>
             </div>
-            <!-- Mensaje -->
-            <p><?php echo $mensaje; ?></p>
 
             <div class='cont_crearmodificar'>
                 <h1>Crear Producto</h1>
                 <div class="crear">
+                    <!-- Mensaje -->
+                    <p id="mensaje"><?php
+                        if ($_SESSION['mensaje']) {
+                            echo '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />' . $_SESSION['mensaje'];
+                        }
+                        ?></p>
                     <!--Nombre-->
                     <div class="cont">
                         <label for="nombre">Nombre</label><br>
-                        <input type="text" name="nombre" id="nombre" required placeholder="Nombre" pattern="[a-zA-Z0-9]+" value="" title="El nombre debe tener al menos un caracter o dígito.">
+                        <input type="text" name="nombre" id="nombre" required placeholder="Nombre" value="">
                     </div>
                     <!--Nombre corto-->
                     <div class="cont">
@@ -57,12 +86,12 @@ require_once './ConexionBaseDatos.php';
                             //Si ha sido posible la conexión.
                             if (isset($conexionBD)) {
                                 $stmt = $conexionBD->stmt_init();
-                                $consulta = "select distinct f.nombre from familias f inner join productos p on f.cod=p.familia;";
+                                $consulta = "select * from familias;";
                                 $stmt->prepare($consulta);
                                 if ($stmt->execute()) {
-                                    $stmt->bind_result($familia);
+                                    $stmt->bind_result($codFamilia, $nombreFamilia);
                                     while ($stmt->fetch()) {
-                                        echo "<option value='" . $familia . "'>" . $familia . "</option>";
+                                        echo "<option value='" . $codFamilia . "'>" . $nombreFamilia . "</option>";
                                     }
                                     $stmt->close();
                                 }

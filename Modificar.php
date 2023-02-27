@@ -80,8 +80,9 @@ if (isset($conexionBD)) {
 
                     <!-- Mensaje -->
                     <p id="mensaje"><?php
-                        if (isset($_SESSION['mensaje'])) {
+                        if ($_SESSION['mensaje'] !== '') {
                             echo $_SESSION['mensaje'];
+                            echo $_SESSION['mensaje']='';
                         }
                         ?></p>
 

@@ -69,7 +69,8 @@ if (isset($conexionBD)) {
                     <!-- Mensaje -->
                     <p id="mensaje"><?php
                         if (isset($_SESSION['mensaje'])) {
-                            echo '! ' . $_SESSION['mensaje'];
+                            echo $_SESSION['mensaje'];
+                            $_SESSION['mensaje']='';
                         }
                         ?></p>
                     <div class='btcrear'>

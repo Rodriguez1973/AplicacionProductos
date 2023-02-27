@@ -4,7 +4,7 @@
 session_start();
 session_destroy();
 session_start();
-$mensaje = "";
+$_SESSION['mensaje'] = null;
 
 //Si se ha establecido el login.
 if (isset($_POST['btlogin'])) {
@@ -26,13 +26,13 @@ if (isset($_POST['btlogin'])) {
                     $_SESSION['usuario'] = $usuario;
                     header("Location: Listado.php");
                 } else {
-                    $mensaje = "Los datos de login son incorrectos.";
+                    $_SESSION['mensaje'] = "Los datos de login son incorrectos.";
                 }
             } else {
-                $mensaje = "Los datos de login son incorrectos.";
+                $_SESSION['mensaje'] = "Los datos de login son incorrectos.";
             }
         } else {
-            $mensaje = "Se ha producido un error en la ejecución de la consulta.";
+            $_SESSION['mensaje'] = "Se ha producido un error en la ejecución de la consulta.";
         }
     }
 } else if (isset($_POST['btinvitado'])) {
@@ -81,7 +81,12 @@ if (isset($_POST['btlogin'])) {
                     <button type="submit" name="btlogin" id="btlogin" value="">Login</button>
                 </div>
             </div>
-            <?php echo '<p id="mensaje">' . $mensaje . '</p>'; ?>
+
+            <?php
+            if ($_SESSION['mensaje'] !== '') {
+                echo '<p id="mensaje">' . $_SESSION['mensaje'] . '</p>';
+            }
+            ?>
         </form>
     </body>
 </html>

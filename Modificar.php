@@ -7,8 +7,14 @@ require_once './ConexionBaseDatos.php';
 $cambio = false;
 
 if (isset($conexionBD)) {
+    if (isset($_POST['btlimpiar'])) {
+        $nombre = "";
+        $nombreCorto = "";
+        $descripcion = "";
+        $precio = "";
+        $familia = "";
     //Si se ha pulsado el botón modificar.
-    if (isset($_POST['btmodificar'])) {
+    }else if (isset($_POST['btmodificar'])) {
         $nombre = $_POST['nombre'];
         $nombreCorto = $_POST['nombreCorto'];
         $descripcion = $_POST['descripcion'];
@@ -161,7 +167,7 @@ if (isset($conexionBD)) {
                 <!--Botones-->
                 <div class="botones">
                     <button type="submit" name="btmodificar" id="btmodificar" value="">Modificar</button>
-                    <button type="reset" name="btlimpiar" id="btlimpiar" value="">Limpiar</button>
+                    <button type="submit" name="btlimpiar" id="btlimpiar" value="">Limpiar</button>
                     <a href="Listado.php">
                         <button type="button" name="btvolver" id="btvolver" value="">Volver</button>
                     </a> 

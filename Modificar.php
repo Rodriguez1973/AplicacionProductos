@@ -24,7 +24,7 @@ if (isset($conexionBD)) {
             $stmt = $conexionBD->stmt_init();
             $consulta = "update productos set nombre=?, nombre_corto=?, descripcion=?, pvp=?, familia=? where id=?;";
             $stmt->prepare($consulta);
-            $stmt->bind_param('sssisi', $nombre, $nombreCorto, $descripcion, $precio, $familia, $_SESSION['datos']['codigo']);
+            $stmt->bind_param('sssdsi', $nombre, $nombreCorto, $descripcion, $precio, $familia, $_SESSION['datos']['codigo']);
             $stmt->execute();
             $_SESSION['mensaje'] = "! Producto modificado correctamente.";
             header('Location: Listado.php');
